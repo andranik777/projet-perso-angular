@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: #151515 !important;
+  }
+
+
+.game-card {
+  background-color: #202020;
+  color: white;
+}
+
+.heigti {
+  position: absolute;
+  /* height: 511px; */
+  /* height: 278px; */
+  /* margin-top: 1rem;*/
+  z-index: 2;
+  /*top: 17rem;*/
+  width: 18rem;
+  left: 0rem;
+}

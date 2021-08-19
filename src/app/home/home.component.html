@@ -1,0 +1,71 @@
+<div class="search-container">
+  <form class="search-form" #form="ngForm" (ngSubmit)="onSubmit(form)"
+  >
+    <span class="logo" routerLink="/">NgVGDB</span>
+    <input
+      class="search-input"
+      name="search"
+      [(ngModel)] = mySearch
+      ngModel
+      placeholder="Search 500,000+ games"
+    />
+    <button class="search-button" (click)="searchGames('released',mySearch)">Search</button>
+  </form>
+</div>
+
+
+<section class="d-flex justify-content-center align-items-center flex-wrap">
+    <div class="card mr-5 mt-5 game-card" style="width: 18rem;" *ngFor="let element of game let index = index;" (mouseenter)="myfunction(index); $event.stopPropagation()" (mouseleave)="myfunction(''); $event.stopPropagation()">
+
+      <div id="carouselExampleIndicators{{index}}" class="carousel slide card-img-top" data-ride="carousel">
+
+        <div class="carousel-inner">
+          <div class="carousel-item" *ngFor="let item of element.short_screenshots let i = index" [class.active]="i ==0">
+            <img class="d-block w-100" src="{{item.image}}" alt="First slide">
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators{{index}}" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators{{index}}" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+
+        <div class="card-body" >
+        <div class="d-flex mb-3">
+          <div  class="mr-2 " *ngFor="let item of element.parent_platforms" [ngSwitch]="item.platform.slug">
+                <img src="assets/images/platforms/pc.svg" width="25px" *ngSwitchCase="'pc'">
+                <img src="assets/images/platforms/playstation.svg" width="30px" *ngSwitchCase="'playstation'">
+                <img src="assets/images/platforms/xbox.svg" width="24px" *ngSwitchCase="'xbox'">
+                <img src="assets/images/platforms/ios.svg" width="18px" *ngSwitchCase="'ios'">
+                <img src="assets/images/platforms/android.svg" width="25px" *ngSwitchCase="'android'">
+                <img src="assets/images/platforms/mac.svg" width="22px" *ngSwitchCase="'mac'">
+                <img src="assets/images/platforms/linux.svg" width="22px" *ngSwitchCase="'linux'">
+                <img src="assets/images/platforms/nintendo.svg" width="30px" *ngSwitchCase="'nintendo'">
+                <img src="assets/images/platforms/atari.png" width="20px" *ngSwitchCase="'atari'">
+                <img src="assets/images/platforms/commodore-amiga.svg" width="30px" *ngSwitchCase="'commodore-amiga'">
+                <img src="assets/images/platforms/sega.svg" width="30px" *ngSwitchCase="'sega'">
+                <img src="assets/images/platforms/web.svg" width="22px" *ngSwitchCase="'web'">
+          </div>
+        </div>
+
+        <h5 class="card-title">{{element.name}}</h5>
+            <ul class="list-group list-group-flush" *ngIf="display == index+'a'" [class.heigti]="display == index+'a'" >
+              <li class="list-group-item bg-dark">Release date: {{element.released}}</li>
+              <li class="list-group-item bg-dark">Genres:
+              <span *ngFor="let genre of element.genres">
+                {{genre.name}}
+              </span>
+              </li>
+              <li class="list-group-item bg-dark">Rating: {{element.rating}}/{{element.rating_top}}</li>
+              <li class="d-flex justify-content-center list-group-item bg-dark">
+                <a href="#" class="btn btn-primary">See details</a>
+              </li>
+            </ul>
+
+      </div>
+    </div>
+</section>
