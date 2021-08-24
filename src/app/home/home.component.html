@@ -1,15 +1,42 @@
-<div class="search-container">
+<div class="search-container"  >
   <form class="search-form" #form="ngForm" (ngSubmit)="onSubmit(form)"
   >
-    <span class="logo" routerLink="/">NgVGDB</span>
-    <input
-      class="search-input"
-      name="search"
-      [(ngModel)] = mySearch
-      ngModel
-      placeholder="Search 500,000+ games"
-    />
-    <button class="search-button" (click)="searchGames('released',mySearch)">Search</button>
+
+    <div class="d-flex flex-column">
+    <div>
+       <input
+        class="search-input"
+        name="search"
+        [(ngModel)] = mySearch
+        ngModel
+        placeholder="Search 500,000+ games"
+
+      />
+       <button class="search-button" (click)="searchGames(page,sort,platform,mySearch)">Search</button>
+    </div>
+     <select [(ngModel)]="sort" style="width: 10rem"  name="sort" >
+      <option value="relevance" >Revelance </option>
+      <option value="created">Date added</option>
+      <option value="name"> Name</option>
+      <option value="created">Release date</option>
+      <option value="-added">Popularity</option>
+      <option value="-rating">Average rating</option>
+    </select>
+     <select [(ngModel)]="platform" style="width: 10rem"  name="platform" >
+       <option value="1" >PC </option>
+       <option value="2">PlayStation</option>
+       <option value="3">Xbox</option>
+       <option value="4">iOS</option>
+       <option value="5">mac</option>
+       <option value="6">Linux</option>
+       <option value="7">Nintendo</option>
+       <option value="21">Android</option>
+       <option value="9">Atari</option>
+       <option value="10">Commodore / Amiga</option>
+
+
+     </select>
+   </div>
   </form>
 </div>
 
@@ -17,22 +44,10 @@
 <section class="d-flex justify-content-center align-items-center flex-wrap">
     <div class="card mr-5 mt-5 game-card" style="width: 18rem;" *ngFor="let element of game let index = index;" (mouseenter)="myfunction(index); $event.stopPropagation()" (mouseleave)="myfunction(''); $event.stopPropagation()">
 
-      <div id="carouselExampleIndicators{{index}}" class="carousel slide card-img-top" data-ride="carousel">
-
-        <div class="carousel-inner">
-          <div class="carousel-item" *ngFor="let item of element.short_screenshots let i = index" [class.active]="i ==0">
-            <img class="d-block w-100" src="{{item.image}}" alt="First slide">
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators{{index}}" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators{{index}}" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-      </div>
+      <ng-container
+        [ngTemplateOutlet]="background_img"
+        [ngTemplateOutletContext]="{element:element,index:index}">
+      </ng-container>
 
         <div class="card-body" >
         <div class="d-flex mb-3">
@@ -60,7 +75,7 @@
                 {{genre.name}}
               </span>
               </li>
-              <li class="list-group-item bg-dark">Rating: {{element.rating}}/{{element.rating_top}}</li>
+              <li class="list-group-item bg-dark" *ngIf="element.rating">Rating: {{element.rating}}/{{element.rating_top}}</li>
               <li class="d-flex justify-content-center list-group-item bg-dark">
                 <a href="#" class="btn btn-primary">See details</a>
               </li>
@@ -69,3 +84,32 @@
       </div>
     </div>
 </section>
+
+
+<button class="btn btn-success" (click)="change_page(page);searchGames(page,sort,platform,mySearch)" (change)="changement(page)" name="page"  value="{{page}}" >Show more</button>
+
+
+
+
+<ng-template #background_img let-item='element' >
+    <img src="{{item.background_image}}" class="card-img-top">
+</ng-template>
+
+<ng-template #carousel let-element='element' let-index ="index" >
+  <div id="carouselExampleIndicators{{index}}" class="carousel slide card-img-top" data-ride="carousel" >
+    <div class="carousel-inner">
+      <div class="carousel-item" *ngFor="let item of element.short_screenshots let i = index" [class.active]="i ==0">
+        <img class="d-block w-100" src="{{item.image}}" alt="First slide" >
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators{{index}}" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators{{index}}" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+</ng-template>
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {GameCard} from "../../model/game-component/game-card";
 import {GameApiService} from "../services/game-api.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -11,8 +11,11 @@ import {NgForm} from "@angular/forms";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public sort!:string
+  public sort:string ="relevance"
   public mySearch!:string
+  public selectValue:string ="released"
+  public platform:string = "1"
+  public page:number =1;
 
 
   private routeSub!: Subscription;
@@ -24,6 +27,9 @@ export class HomeComponent implements OnInit {
 
   ) { }
 
+  change_page(page:number){
+      return this.page++
+  }
 
   game:any = [];
 
@@ -36,30 +42,53 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
   }
 
-  rand:number = Math.random() * (10000 - 1) + 1;
 
-  cardId:string = "yolo" +this.rand;
 
   ngOnInit(): void {
-    this.gameApiService.getGame("released").subscribe((game) => {
+    this.gameApiService.getGame(1,"-added","1").subscribe((game) => {
       this.game = game.results;
       console.log(this.game)
 
     })
   }
-  searchGames(sort: string, search?: string): void {
+  searchGames(page:number,sort: string, platform:string, search?: string,): void {
     this.gameSub = this.gameApiService
-      .getGame(sort, search)
+      .getGame(page,sort,platform, search)
       .subscribe((gameList: any) => {
-        this.game = gameList.results;
-        console.log(gameList);
+          this.game.push(...gameList.results)
+
+
       });
+    console.log(this.game)
+
   }
   onSubmit(form: NgForm) {
-    this.router.navigate(['search', form.value.search]);
+    if(form.value.search){
+      this.router.navigate(["game",{'search': form.value.search},{"ordering":form.value.sort}]);
+    }
+    else {
+      this.router.navigate(["game",form.value.sort]);
+
+    }
+    console.log(form.value)
   }
   openGameDetails(id: string): void {
     this.router.navigate(['details', id]);
   }
+
+
+  changement(evenement:any) {
+    //Evenement contient l'évènement transmis, on peut accéder à la donnée sélectionnée en manipulant l'attribut target
+    var objet = evenement.target.data;
+    console.log(evenement)
+  }
+
+  onChanges(form: NgForm): void {
+    form.value
+  }
+
+
+
+
 
 }

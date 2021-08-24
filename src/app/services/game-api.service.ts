@@ -13,12 +13,15 @@ export class GameApiService {
   constructor(private httpClient: HttpClient) { }
 
   getGame(
+    page:number,
     ordering: string,
-    search?: string
+    platform:string,
+    search?: string,
   ): Observable<any> {
-    let params = new HttpParams().set('ordering', ordering);
+
+    let params = new HttpParams().set('ordering', ordering).set('parent_platforms', platform).set('page', page);
     if (search) {
-      params = new HttpParams().set('ordering', ordering).set('search', search);
+      params = new HttpParams().set('ordering', ordering).set('search', search).set('parent_platforms', platform).set('page', page);
       console.log(params)
 
     }
