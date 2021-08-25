@@ -55,13 +55,24 @@ export class HomeComponent implements OnInit {
     this.gameSub = this.gameApiService
       .getGame(page,sort,platform, search)
       .subscribe((gameList: any) => {
-          this.game.push(...gameList.results)
-
+          this.game =gameList.results;
+          console.log("elo")
 
       });
+
     console.log(this.game)
 
   }
+
+  moreGame(page:number,sort: string, platform:string, search?: string,): void {
+    this.gameSub = this.gameApiService
+      .getGame(page,sort,platform, search)
+      .subscribe((gameList: any) => {
+        this.game.push(...gameList.results)
+
+      });
+  }
+
   onSubmit(form: NgForm) {
     if(form.value.search){
       this.router.navigate(["game",{'search': form.value.search},{"ordering":form.value.sort}]);
@@ -83,12 +94,10 @@ export class HomeComponent implements OnInit {
     console.log(evenement)
   }
 
-  onChanges(form: NgForm): void {
-    form.value
+  changi(elo:string){
+    console.log(elo)
   }
 
-
-
-
+  bookTitle!:string
 
 }

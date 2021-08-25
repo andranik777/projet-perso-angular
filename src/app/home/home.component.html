@@ -14,7 +14,7 @@
       />
        <button class="search-button" (click)="searchGames(page,sort,platform,mySearch)">Search</button>
     </div>
-     <select [(ngModel)]="sort" style="width: 10rem"  name="sort" >
+     <select [(ngModel)]="sort" style="width: 10rem"  name="sort"  (ngModelChange)="searchGames(page,sort,platform,mySearch)">
       <option value="relevance" >Revelance </option>
       <option value="created">Date added</option>
       <option value="name"> Name</option>
@@ -22,7 +22,7 @@
       <option value="-added">Popularity</option>
       <option value="-rating">Average rating</option>
     </select>
-     <select [(ngModel)]="platform" style="width: 10rem"  name="platform" >
+     <select [(ngModel)]="platform" style="width: 10rem"  name="platform" (ngModelChange)="searchGames(page,sort,platform,mySearch)" >
        <option value="1" >PC </option>
        <option value="2">PlayStation</option>
        <option value="3">Xbox</option>
@@ -30,11 +30,9 @@
        <option value="5">mac</option>
        <option value="6">Linux</option>
        <option value="7">Nintendo</option>
-       <option value="21">Android</option>
+       <option value="8">Android</option>
        <option value="9">Atari</option>
        <option value="10">Commodore / Amiga</option>
-
-
      </select>
    </div>
   </form>
@@ -42,15 +40,16 @@
 
 
 <section class="d-flex justify-content-center align-items-center flex-wrap">
-    <div class="card mr-5 mt-5 game-card" style="width: 18rem;" *ngFor="let element of game let index = index;" (mouseenter)="myfunction(index); $event.stopPropagation()" (mouseleave)="myfunction(''); $event.stopPropagation()">
+    <div class="card mr-5 mt-5 game-card" style="width: 18rem;" *ngFor="let element of game let index = index;" (mouseenter)="myfunction(index); $event.stopPropagation()" (mouseleave)="myfunction(''); $event.stopPropagation();"
+         (click)="openGameDetails(element.id)">
 
       <ng-container
         [ngTemplateOutlet]="background_img"
         [ngTemplateOutletContext]="{element:element,index:index}">
       </ng-container>
 
-        <div class="card-body" >
-        <div class="d-flex mb-3">
+        <div class="card-body">
+        <div class="d-flex mb-3 flex-wrap">
           <div  class="mr-2 " *ngFor="let item of element.parent_platforms" [ngSwitch]="item.platform.slug">
                 <img src="assets/images/platforms/pc.svg" width="25px" *ngSwitchCase="'pc'">
                 <img src="assets/images/platforms/playstation.svg" width="30px" *ngSwitchCase="'playstation'">
@@ -75,7 +74,7 @@
                 {{genre.name}}
               </span>
               </li>
-              <li class="list-group-item bg-dark" *ngIf="element.rating">Rating: {{element.rating}}/{{element.rating_top}}</li>
+              <li class="list-group-item bg-dark" *ngIf="element.rating">Rating: {{element.rating}}/5</li>
               <li class="d-flex justify-content-center list-group-item bg-dark">
                 <a href="#" class="btn btn-primary">See details</a>
               </li>
@@ -85,10 +84,7 @@
     </div>
 </section>
 
-
-<button class="btn btn-success" (click)="change_page(page);searchGames(page,sort,platform,mySearch)" (change)="changement(page)" name="page"  value="{{page}}" >Show more</button>
-
-
+<button class="btn btn-success" (click)="change_page(page);moreGame(page,sort,platform,mySearch)" (change)="changement(page)" name="page"  value="{{page}}" *ngIf="game.length >0" >Show more</button>
 
 
 <ng-template #background_img let-item='element' >

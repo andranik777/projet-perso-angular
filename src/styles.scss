@@ -2,6 +2,8 @@
 
 body {
     background-color: #151515 !important;
+    font-weight:600;font-size:12px;
+     font-family:Roboto, "Helvetica", sans-serif
   }
 
 
@@ -20,3 +22,63 @@ body {
   width: 18rem;
   left: 0rem;
 }
+
+
+.game-banner-img {
+  width: 100%;
+  filter: blur(5px);
+}
+
+.game-header-title{
+  font-size: 70px;
+  color: #fff;
+  font-weight: 700;
+  line-height: 70px;
+  white-space: nowrap;
+}
+
+.game-header{
+  color: #fff;
+  font-weight: 700;
+}
+
+.header-text {
+  position: relative;
+  top: -14rem;
+  text-align: center;
+}
+
+
+
+
+
+
+/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 100px 20px;
+  height: 100%;
+}
+
+#Home {background-color: red;}
+#News {background-color: green;}
+#Contact {background-color: blue;}
+#About {background-color: orange;}
