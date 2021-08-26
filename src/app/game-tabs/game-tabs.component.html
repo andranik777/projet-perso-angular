@@ -1,54 +1,63 @@
 <div class="game-tabs">
-  <section  backgroundColor="primary">
-    <div label="About">
-      <p *ngIf="game?.parent_platforms?.length" class="game-tabs-par">
-        Platforms:
-        <span *ngFor="let game of game?.parent_platforms; let last = last"
-        >{{ game.platform.name }}<span *ngIf="!last">, </span></span
+  <section  backgroundColor="primary" >
+    <ul class="nav">
+    <li *ngFor="let element of menuList" class="nav-item">
+      <a href="/details/{{game?.id}}#{{element}}" (click)="openMenulist(element)" [ngClass]="{'active':selectedList==element}" >{{element}}</a>
+    </li>
+    </ul>
+
+    <div label="About" *ngIf="selectedList == 'About'">
+        <p *ngIf="game?.parent_platforms?.length" class="game-tabs-par">
+          Platforms:
+          <span *ngFor="let game of game?.parent_platforms; let last = last"
+          >{{ game.platform.name }}<span *ngIf="!last">, </span></span
+          >
+        </p>
+        <p *ngIf="game?.publishers.length" class="game-tabs-par">
+          Publishers:
+          <span *ngFor="let publisher of game?.publishers; let last = last"
+          >{{ publisher.name }}<span *ngIf="!last">, </span></span
+          >
+        </p>
+        <p *ngIf="game?.website" class="game-tabs-par">
+          Website:
+          <a class="game-tabs-link" href="{{ game?.website }}" target="_blank">{{
+            game?.website
+            }}</a>
+        </p>
+        <div class="game-description" [innerHTML]="game?.description"></div>
+        <p class="game-tabs-votes">
+          <ng-container *ngFor="let rating of game?.ratings">
+            <span *ngIf="rating.title === 'exceptional'">
+              <span class="game-votes-count">{{ rating.count || 0 }}</span>
+            </span>
+            <span *ngIf="rating.title === 'skip'">
+              <span class="game-votes-count">{{ rating.count || 0 }}</span>
+            </span>
+          </ng-container>
+        </p>
+      </div>
+
+      <div label="Screenshots" *ngIf="game?.screenshots?.length && selectedList == 'Screenshots'">
+        <img
+          class="game-screenshot"
+          *ngFor="let screenshot of game?.screenshots"
+          src="{{ screenshot.image }}"
+          src="{{ screenshot.image }}"
+          alt="screenshot"
+        />
+      </div>
+
+      <div label="Trailers" *ngIf="game?.trailers.length && selectedList == 'Trailers'">
+        <video
+          class="game-trailer"
+          controls
+          *ngFor="let trailer of game?.trailers"
         >
-      </p>
-      <p *ngIf="game?.publishers.length" class="game-tabs-par">
-        Publishers:
-        <span *ngFor="let publisher of game?.publishers; let last = last"
-        >{{ publisher.name }}<span *ngIf="!last">, </span></span
-        >
-      </p>
-      <p *ngIf="game?.website" class="game-tabs-par">
-        Website:
-        <a class="game-tabs-link" href="{{ game?.website }}" target="_blank">{{
-          game?.website
-          }}</a>
-      </p>
-      <div class="game-description" [innerHTML]="game?.description"></div>
-      <p class="game-tabs-votes">
-        <ng-container *ngFor="let rating of game?.ratings">
-          <span *ngIf="rating.title === 'exceptional'">
-            <span class="game-votes-count">{{ rating.count || 0 }}</span>
-          </span>
-          <span *ngIf="rating.title === 'skip'">
-            <span class="game-votes-count">{{ rating.count || 0 }}</span>
-          </span>
-        </ng-container>
-      </p>
-    </div>
-    <div label="Screenshots" *ngIf="game?.screenshots?.length">
-      <img
-        class="game-screenshot"
-        *ngFor="let screenshot of game?.screenshots"
-        src="{{ screenshot.image }}"
-        src="{{ screenshot.image }}"
-        alt="screenshot"
-      />
-    </div>
-    <div label="Trailers" *ngIf="game?.trailers.length">
-      <video
-        class="game-trailer"
-        controls
-        *ngFor="let trailer of game?.trailers"
-      >
-        <source src="{{ trailer.data?.max }}" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
+          <source src="{{ trailer.data?.max }}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
   </section>
 </div>
